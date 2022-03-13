@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="cookie.js"></script>
+    <style>
+        body {
+            background: linear-gradient(120deg, rgb(102, 142, 216), blue);
+            height: 100%;
+        }
+
+        td {
+            height: 70px;
+            width: 500px;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container fluid">
+        <div class="container">
+            <h1 class="display-3">Sign up</h1>
+        </div>
+        <div class="container mt-5">
+            <table>
+                <tr>
+                    <td class="display-6">Email_id</td>
+                    <td><input class="form-control" id="email" type="email" placeholder="Email_id"></td>
+                </tr>
+                <tr>
+                    <td class="display-6">Password</td>
+                    <td><input class="form-control" id="password" type="password" placeholder="Password"></td>
+                    <td>&nbsp;<input type="checkbox" onclick="newfunction()">&nbsp; Show password</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button class="btn btn-primary" onclick="login()">Login</button></td>
+                </tr>
+                <!-- <tr>
+                    <td></td>
+                    <td><button class="btn btn-primary"><a class="text-light" href="registration">Register</a></button></td>
+                </tr> -->
+            </table>
+        </div>
+        <div class="container">
+            <hr>
+            <h1 class="display-3">Registration Form</h1>
+            <table>
+                <tr>
+                    <td class="display-6">Name</td>
+                    <td><input class="form-control" id="regname" type="email" placeholder="Name"></td>
+                </tr>
+                <tr>
+                    <td class="display-6">Email_id</td>
+                    <td><input class="form-control" id="regemail" type="email" placeholder="Email_id"></td>
+                </tr>
+                <tr>
+                    <td class="display-6">Password</td>
+                    <td><input class="form-control" id="regpassword" type="password" placeholder="Password"></td>
+                    <td>&nbsp;<input type="checkbox" onclick="myfunction()">&nbsp; Show password</td>
+                </tr>
+                <tr>
+                    <td class="display-6">Confirm Password</td>
+                    <td><input class="form-control" id="conpassword" type="password" placeholder="Confirm Password">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button class="btn btn-primary" onclick="register()">Register</button></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+
+    <script>
+        login = () => {
+
+            var em = document.getElementById('email').value.trim();
+            var pattern = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+            if (em == "") {
+                alert('Please enter email id');
+                return;
+            }
+            // if (pattern.test(em) == false) {
+            //     alert("Please enter valid email");
+            //     return;
+            // }
+
+            var pass = document.getElementById('password').value.trim();
+            var patpass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+            if (pass == "") {
+                alert("Please enter password");
+                return;
+            }
+
+            // if (patpass.test(pass) == false) {
+            //     alert("Please enter proper password");
+            //     return;
+            // }
+
+
+            let email = $("#email").val();
+            let password = $("#password").val();
+            let data = {
+                data: {
+                    email: email,
+                    password: password
+                }
+            }
+            console.log(data);
+
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:4000/login',
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                traditional: true,
+                success: function (result) {
+                    result = JSON.parse(result);
+                    console.log(result);
+                    if (result.status == "success") {
+                        setcookie("usertype", "user");
+                        setcookie("userid", result.data[0].id);
+                        setcookie("username", result.data[0].name);
+                        window.location.replace("http://localhost:4000/user");
+                    }
+                    else {
+                        alert("Wrong credentials");
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+        register = () => {
+
+            var nom = document.getElementById('regname').value.trim();
+            if (nom == "") {
+                alert("Please enter name");
+                document.getElementById('regname').focus();
+                return;
+            }
+
+            var em = document.getElementById('regemail').value.trim();
+            var pattern = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+            if (em == "") {
+                alert('Please enter email id');
+                document.getElementById('regemail').focus();
+                return;
+            }
+            if (pattern.test(em) == false) {
+                alert("Please enter valid email");
+                document.getElementById('regemail').focus();
+                return;
+            }
+
+            var pass = document.getElementById('regpassword').value.trim();
+            var patpass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+            if (pass == "") {
+                alert("Please enter password");
+                document.getElementById('regpassword').focus();
+                return;
+            }
+
+            if (patpass.test(pass) == false) {
+                alert("Please enter proper password");
+                document.getElementById('regpassword').focus();
+                return;
+            }
+
+
+            var con = document.getElementById('conpassword').value;
+            if (con == "") {
+                alert("Please confirm Password");
+                return;
+            }
+
+            if (con == pass) {
+                let name = $("#regname").val();
+                let email = $("#regemail").val();
+                let password = $("#regpassword").val();
+                let data = {
+                    data: {
+                        name: name,
+                        email: email,
+                        password: password
+                    }
+                }
+                console.log(data);
+
+                $.ajax({
+                    type: 'post',
+                    url: 'http://localhost:4000/register',
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    traditional: true,
+                    success: function (result) {
+                        result = JSON.parse(result);
+                        console.log(result);
+                        if (result.data.status == "success") {
+                            setcookie("usertype", "user");
+                            setcookie("userid", result.data.id);
+                            setcookie("username", name);
+                            window.location.replace("http://localhost:4000/user");
+                        }
+                        else {
+                            alert("Email already exists......");
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+            else {
+                alert("Please check confirm password");
+                return;
+            }
+
+            // let name = $("#regname").val();
+            // let email = $("#regemail").val();
+            // let password = $("#regpassword").val();
+            // let data = {
+            //     data: {
+            //         name: name,
+            //         email: email,
+            //         password: password
+            //     }
+            // }
+            // console.log(data);
+
+            // $.ajax({
+            //     type: 'post',
+            //     url: 'http://localhost:4000/register',
+            //     data: JSON.stringify(data),
+            //     contentType: "application/json; charset=utf-8",
+            //     traditional: true,
+            //     success: function (result) {
+            //         result = JSON.parse(result);
+            //         console.log(result);
+            //         if (result.data.status == "success") {
+            //             setcookie("usertype", "user");
+            //             setcookie("userid", result.data.id);
+            //             setcookie("username", name);
+            //             window.location.replace("http://localhost:4000/user");
+            //         }
+            //         else {
+            //             alert("Email already exists......");
+            //         }
+            //     },
+            //     error: function (err) {
+            //         console.log(err);
+            //     }
+            // });
+        }
+
+        function myfunction() {
+            var x = document.getElementById("regpassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+        function newfunction() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
