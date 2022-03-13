@@ -153,68 +153,7 @@
                 }
             });
         }
-
-        // list = ()=> {
-
-        //     let data = {
-        //         data: {
-        //             userid: getcookie("userid")
-        //         }
-        //     }
-        //     console.log(data);
-
-        //     $.ajax({
-        //         type: 'post',
-        //         url: 'http://localhost:4000/gettask',
-        //         data: JSON.stringify(data),
-        //         contentType: "application/json; charset=utf-8",
-        //         traditional: true,
-        //         success: function (result) {
-        //             result = JSON.parse(result);
-        //             console.log(result);
-        //             let tasks = result.data;
-        //             let mytable = document.getElementById("mytable");
-        //             let rowcount = mytable.rows.length;
-        //             if (rowcount > 1) {
-        //                 for (let i = 1; i < rowcount; i++) {
-        //                     mytable.deleteRow(1);
-        //                 }
-        //             }
-
-        //             let count = 0;
-        //             tasks.forEach(task => {
-        //                 count++;
-        //                 let row = mytable.insertRow(mytable.rows.length);
-        //                 let cell0 = row.insertCell(0);
-        //                 let cell1 = row.insertCell(1);
-        //                 let cell2 = row.insertCell(2);
-        //                 let cell3 = row.insertCell(3);
-        //                 let cell4 = row.insertCell(4);
-        //                 let cell5 = row.insertCell(5);
-
-        //                 cell0.innerHTML = count;
-        //                 cell1.innerHTML = task.tdate;
-        //                 cell2.innerHTML = task.ttime;
-        //                 cell3.innerHTML = task.task;
-        //                 cell4.innerHTML = task.status;
-        //                 cell5.innerHTML = "<button class='btn btn-secondary me-2' onclick='edittask(" + task.id + ")'><i class='fa fa-edit'></i></button>";
-        //                 cell5.innerHTML += "<button class='btn btn-danger me-2' onclick='deletetask(" + task.id + ")'><i class='fa fa-trash'></i></button>";
-        //                 if (task.status == "Open") {
-        //                     cell5.innerHTML += "<button class='btn btn-warning me-2' onclick='changestatus(" + task.id + ", \"Close\" )'><i class='fa fa-close '></i></button>";
-        //                 }
-        //                 else {
-        //                     cell5.innerHTML += "<button class='btn btn-success me-2' onclick='changestatus(" + task.id + ", \"Open\" )'><i class='fa fa-check'></i></button>";
-        //                 }
-
-        //             });
-        //         },
-        //         error: function (err) {
-        //             console.log(err);
-        //         }
-        //     });
-
-
-        // }
+       
 
         list = () => {
             let data = {
